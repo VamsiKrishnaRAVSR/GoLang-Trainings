@@ -42,23 +42,41 @@ func main() {
 		// take the input
 		str := ""
 		fmt.Scanln(&str)
+
+		// if str length <2
 		// compare and  update entries placeholder and chances
+		if len(str) > 2 {
+			if str == word {
+				fmt.Println("You win!")
+				break
+			} else {
+				chances -= 1
+				entries[str] = true
+				continue
+			}
+		}
 		_, ok := entries[str]
 
 		if ok {
 			continue
 		}
-		entries[str] = true
 
 		found := false
-		temp := strings.Split(word, "")
-		for i, v := range temp {
-			if v == str {
-				placeholder[i] = v
+		for i, v := range word {
+			if str == string(v) {
+				placeholder[i] = string(v)
 				found = true
 			}
 		}
+		// temp := strings.Split(word, "")
+		// for i, v := range temp {
+		// 	if  {
+		// placeholder[i] = v
+		// found = true
+		// 	}
+		// }
 		if !found {
+			entries[str] = true
 			chances -= 1
 		}
 
