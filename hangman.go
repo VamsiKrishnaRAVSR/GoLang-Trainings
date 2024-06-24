@@ -1,12 +1,29 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"strings"
 )
 
+func get_word() string {
+	resp, err := http.Get("https://random-word-api.herokuapp.com/word?number=5")
+	if err != nil {
+		return "elephant"
+	}
+	defer resp.Body.Close()
+	words := []string{}
+
+	body, err := io.ReadAll(resp.Body)
+	err = json.Unmarshal(body, &words)
+	// fmt.Printf("%s", body)
+	return words[0]
+}
+
 func main() {
-	word := "elephant"
+	word := get_word()
 	entries := map[string]bool{}
 	placeholder := []string{}
 	// slice := make([]string, len(word), len(word))
@@ -21,6 +38,7 @@ func main() {
 		userInput := strings.Join(placeholder, "")
 
 		if chances == 0 && userInput != word {
+			fmt.Printf("%s \n", word)
 			fmt.Println("Game Over! Try again")
 			break
 		}
